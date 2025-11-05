@@ -1,5 +1,6 @@
-import hashlib
-import json
+import streamlit as st
+import hashlib, json, os, time   # ← incluye time aquí
+
 
 def get_hash(text: str, algo: str = "sha256") -> str:
     """Genera un hash único para el texto dado."""
