@@ -1,9 +1,9 @@
-
+import streamlit as st
 st.title("Acta Digital")
 st.subheader("Aplicación creada en Streamlit")
 st.write("¡Bienvenido! Aquí podrás registrar y visualizar actas de manera digital.")
 
-import streamlit as st
+
 import hashlib, time, json
 
 st.title("Acta Digital — Import Test")
