@@ -1,37 +1,32 @@
 import streamlit as st
-import hashlib, json, os, time   # ← incluye time aquí
-
+import hashlib, json, os
+from datetime import datetime
 
 def get_hash(text: str, algo: str = "sha256") -> str:
-    """Genera un hash único para el texto dado."""
     return hashlib.new(algo, text.encode("utf-8")).hexdigest()
-# Combinar los datos del acta en un solo texto
-fecha = time.strftime("%Y-%m-%d %H:%M:%S")
 
-datos = {
-    "titulo": titulo,
-    "autor": autor,
-    "contenido": contenido,
-    "fecha": fecha
-}
+st.title("🧾 Acta Digital")
+titulo = st.text_input("Título")
+autor = st.text_input("Autor")
+contenido = st.text_area("Contenido")
 
-# Convertir el acta a JSON ordenado (para que el hash sea estable)
-texto_canonico = json.dumps(datos, ensure_ascii=False, sort_keys=True)
+if st.button("📄 Guardar acta"):
+    if titulo and autor and contenido:
+        fecha = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        datos = {"titulo": titulo, "autor": autor, "contenido": contenido, "fecha": fecha}
+        texto_canonico = json.dumps(datos, ensure_ascii=False, sort_keys=True)
+        hash_acta = get_hash(texto_canonico)
 
-# Generar el hash único
-hash_acta = get_hash(texto_canonico)
+        acta = {**datos, "hash": hash_acta}
+        with open("actas.json", "a") as f:
+            json.dump(acta, f)
+            f.write("\n")
 
-# Crear el registro completo
-acta = {
-    **datos,
-    "hash": hash_acta
-}
-with open("actas.json", "a") as f:
-    json.dump(acta, f)
-    f.write("\n")
+        st.success("✅ Acta registrada")
+        st.code(f"Hash: {hash_acta}")
+    else:
+        st.warning("Completa todos los campos.")
 
-st.success("✅ Acta registrada correctamente")
-st.code(f"Hash generado: {hash_acta}")
 
 
 st.write("Timestamp:", time.time())
