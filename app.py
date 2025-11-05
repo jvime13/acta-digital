@@ -211,6 +211,3 @@ if st.button("Verificar texto vs hash"):
 
       st.error("⚠️ No coincide: el texto fue modificado o el hash es distinto.")
 
-
-st.write("Timestamp:", time.time())
-st.write("Ejemplo JSON:", json.dumps({"ok": True, "msg": "listo"}))
